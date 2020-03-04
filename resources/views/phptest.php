@@ -151,11 +151,10 @@ function calc()
 	    url: url,
 	    success: function (response) {
 	    	console.log('RECV:',response);
-	    	resp = JSON.parse(response);
-	    	if (resp.error == 1) {
-	             alert('ERROR: ' +resp.msg);
+	    	if (response.error == 1) {
+	             alert('ERROR: ' +response.msg);
 	        } else {
-	            $("#result").html(resp.amount);
+	            $("#result").html(response.amount);
 	        }
 	    },
         error: handleError
@@ -171,11 +170,10 @@ function about()
 	    url: url,
 	    success: function (response) {
 	    	console.log('RECV:',response);
-	    	resp = JSON.parse(response);
-	        if (resp.error == 1) {
-	             alert('ERROR: ' +resp.msg);
+	        if (response.error == 1) {
+	             alert('ERROR: ' +response.msg);
 	        } else {
-	        	alert(resp.msg);
+	        	alert(response.msg);
 	        }
 	    },
         error: handleError
@@ -192,11 +190,10 @@ function clear()
 	    url: url,
 	    success: function (response) {
 	    	console.log('RECV:',response);
-	    	resp = JSON.parse(response);
-	        if (resp.error == 1) {
-	             alert('ERROR: ' +resp.msg);
+	        if (response.error == 1) {
+	             alert('ERROR: ' +response.msg);
 	        } else {
-	        	alert(resp.msg);
+	        	alert(response.msg);
 	        }
 	    },
         error: handleError
