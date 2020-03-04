@@ -9,4 +9,13 @@ class ExchangeTest extends TestCase
             'msg' => 'API written by Kuba Stawiarski',
         ]);
     }
+
+    public function testExchangeShouldReturnValidPlaceholderResponse(): void
+    {
+        $this->get('/api/exchange/100/GBP/EUR')->seeJson([
+            'amount' => 100,
+            'error' => 0,
+            'fromCache' => 0
+        ]);
+    }
 }

@@ -15,3 +15,4 @@ use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
 $router->get('/api/exchange/info', 'ExchangeController@info');
+$router->get('/api/exchange/{value}/{from}/{to}', 'ExchangeController@exchange');
