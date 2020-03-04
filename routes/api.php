@@ -10,3 +10,8 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+
+use Laravel\Lumen\Routing\Router;
+
+/** @var Router $router */
+$router->get('/api/exchange/info', 'ExchangeController@info');
