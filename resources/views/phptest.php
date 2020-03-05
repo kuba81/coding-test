@@ -123,6 +123,20 @@ $( document ).ready(function() {
     $('#clear').click(function() { clear(); });
 });
 
+function handleError(xhr)
+{
+    try {
+        const response = JSON.parse(xhr.responseText);
+
+        if (response.error === 1 && response.msg) {
+            alert('ERROR: ' +response.msg);
+        } else {
+            alert('unknown error')
+        }
+    } catch (e) {
+        alert('unknown error')
+    }
+}
 
 function calc()
 {
@@ -143,7 +157,8 @@ function calc()
 	        } else {
 	            $("#result").html(resp.amount);
 	        }
-	    }
+	    },
+        error: handleError
 	});
 }
 
@@ -162,7 +177,8 @@ function about()
 	        } else {
 	        	alert(resp.msg);
 	        }
-	    }
+	    },
+        error: handleError
 	});
 }
 
@@ -182,7 +198,8 @@ function clear()
 	        } else {
 	        	alert(resp.msg);
 	        }
-	    }
+	    },
+        error: handleError
 	});
 }
 
