@@ -6,6 +6,7 @@ use App\Domain\Exchange\ConversionRates;
 use App\Domain\Exchange\RatesProviderInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 
 class ApiExchangeRatesProvider implements RatesProviderInterface
@@ -44,7 +45,7 @@ class ApiExchangeRatesProvider implements RatesProviderInterface
         // for the purpose of the coding test
         $baseRate = $parsedBody['base'];
 
-        $ratesArray = $parsedBody['rates'];
+        $ratesArray = Arr::only($parsedBody['rates'], config('currencies.supported'));
         $ratesArray[$baseRate] = 1;
 
         return $ratesArray;

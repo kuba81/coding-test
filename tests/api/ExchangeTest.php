@@ -1,5 +1,9 @@
 <?php
 
+use App\Domain\Exchange\ConversionRates;
+use App\Domain\Exchange\RateProvider\DummyRatesProvider;
+use App\Domain\Exchange\RatesProviderInterface;
+
 class ExchangeTest extends TestCase
 {
     public function testInfoEndpointShouldReturnAuthor(): void
@@ -10,10 +14,15 @@ class ExchangeTest extends TestCase
         ]);
     }
 
-    public function testExchangeShouldReturnValidPlaceholderResponse(): void
+    public function testExchangeShouldReturnRoundedValuesBasedOnResponseFromThirdPartyApiResponse(): void
     {
-        $this->get('/api/exchange/100/GBP/EUR')->seeJson([
-            'amount' => 100,
+        $this->setupRateProviderStub([
+            'GBP' => 1,
+            'USD' => 12.3456789
+        ]);
+
+        $this->json('GET', '/api/exchange/100/GBP/USD')->seeJson([
+            'amount' => 1234.57,
             'error' => 0,
             'fromCache' => 0
         ]);
@@ -28,6 +37,10 @@ class ExchangeTest extends TestCase
      */
     public function testShouldReturnErrorIfFromCurrencyIsNotSupported(string $from, string $to, string $rejected): void
     {
+        $this->setupRateProviderStub([
+            'GBP' => 1,
+        ]);
+
         $url = sprintf('/api/exchange/100/%s/%s', $from, $to);
 
         $expectedErrorMessage = sprintf('currency code %s not supported', $rejected);
@@ -46,5 +59,12 @@ class ExchangeTest extends TestCase
             [ 'ABC', 'GBP', 'ABC' ],
             [ 'ABC', 'DEF', 'ABC' ],
         ];
+    }
+
+    private function setupRateProviderStub(array $rates)
+    {
+        $provider = new DummyRatesProvider(new ConversionRates($rates));
+
+        app()->instance(RatesProviderInterface::class, $provider);
     }
 }
