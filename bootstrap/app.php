@@ -58,6 +58,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('cache');
 $app->configure('currencies');
 $app->configure('services');
 

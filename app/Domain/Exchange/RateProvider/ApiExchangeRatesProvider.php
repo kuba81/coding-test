@@ -28,7 +28,7 @@ class ApiExchangeRatesProvider implements RatesProviderInterface
 
             $ratesArray = $this->extractRatesArrayFromResponse($response);
 
-            return new ConversionRates($ratesArray);
+            return new ConversionRates($ratesArray, 'api');
         } catch (GuzzleException $e) {
             dd($e->getMessage());
             throw new SourceException('Unable to fetch exchange rates', 0, $e);
