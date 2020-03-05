@@ -18,4 +18,33 @@ class ExchangeTest extends TestCase
             'fromCache' => 0
         ]);
     }
+
+    /**
+     * @param string $from
+     * @param string $to
+     * @param string $rejected
+     *
+     * @dataProvider invalidCurrencyProvider
+     */
+    public function testShouldReturnErrorIfFromCurrencyIsNotSupported(string $from, string $to, string $rejected): void
+    {
+        $url = sprintf('/api/exchange/100/%s/%s', $from, $to);
+
+        $expectedErrorMessage = sprintf('currency code %s not supported', $rejected);
+
+        $this->json('GET', $url)->seeJson([
+            'error' => 1,
+            'msg' => $expectedErrorMessage
+        ])->seeStatusCode(422);
+    }
+
+    public function invalidCurrencyProvider()
+    {
+        return [
+            // from, to, expected currency in error
+            [ 'GBP', 'DEF', 'DEF' ],
+            [ 'ABC', 'GBP', 'ABC' ],
+            [ 'ABC', 'DEF', 'ABC' ],
+        ];
+    }
 }
