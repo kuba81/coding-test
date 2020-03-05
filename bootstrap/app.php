@@ -59,6 +59,7 @@ $app->singleton(
 
 $app->configure('app');
 $app->configure('currencies');
+$app->configure('services');
 
 /*
 |--------------------------------------------------------------------------
@@ -90,7 +91,7 @@ $app->configure('currencies');
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
