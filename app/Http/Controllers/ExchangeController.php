@@ -24,14 +24,14 @@ class ExchangeController extends Controller
 
         $this->validateValueOrThrow($request->route('value'));
 
-        $converted = $converter->convert(
+        $conversionResult = $converter->convert(
             $request->route('from'), $request->route('to'), $request->route('value')
         );
 
         return response()->json([
-            'amount' => round($converted, 2),
+            'amount' => $conversionResult->getValue(2),
             'error' => 0,
-            'fromCache' => 0,
+            'fromCache' => $conversionResult->getSource() === 'cache' ? 1 : 0,
         ]);
     }
 

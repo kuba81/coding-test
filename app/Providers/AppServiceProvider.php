@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Domain\Exchange\Converter;
 use App\Domain\Exchange\RateProvider\ApiExchangeRatesProvider;
+use App\Domain\Exchange\RateProvider\CachingRatesProviderDecorator;
 use App\Domain\Exchange\RatesProviderInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -22,7 +23,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ClientInterface::class, Client::class);
 
         $this->app->bind(RatesProviderInterface::class, function (Container $container) {
-            return new ApiExchangeRatesProvider($container->make(ClientInterface::class));
+            $realProvider = new ApiExchangeRatesProvider($container->make(ClientInterface::class));
+
+            return new CachingRatesProviderDecorator($realProvider);
         });
 
         $this->app->bind(Converter::class, function (Container $container) {

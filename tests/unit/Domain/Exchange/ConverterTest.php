@@ -16,8 +16,8 @@ class ConverterTest extends TestCase
 
         $converter = new Converter($provider);
 
-        $converted = $converter->convert('GBP', 'USD', 10);
+        $conversionResult = $converter->convert('GBP', 'USD', 10);
 
-        $this->assertEqualsWithDelta(12.9075, $converted, 0.0001);
+        $this->assertEqualsWithDelta(12.9075, $conversionResult->getValue(), 0.0001);
     }
 }

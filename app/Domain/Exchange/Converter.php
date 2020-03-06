@@ -14,13 +14,13 @@ class Converter
         $this->rateProvider = $rateProvider;
     }
 
-    public function convert(string $from, string $to, float $value): float
+    public function convert(string $from, string $to, float $value): ConversionResult
     {
         $conversionRates = $this->rateProvider->getConversionRates();
 
         $valueInBaseCurrency = $value / $conversionRates->getRate($from);
         $converted = $valueInBaseCurrency * $conversionRates->getRate($to);
 
-        return $converted;
+        return new ConversionResult($converted, $conversionRates->getSource());
     }
 }

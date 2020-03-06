@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'exchange-rates-api' => 'https://api.exchangeratesapi.io/latest',
+    'exchange_rates_api' => 'https://api.exchangeratesapi.io/latest',
 ];

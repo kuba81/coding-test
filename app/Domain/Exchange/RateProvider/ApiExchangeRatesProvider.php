@@ -24,7 +24,7 @@ class ApiExchangeRatesProvider implements RatesProviderInterface
     public function getConversionRates(): ConversionRates
     {
         try {
-            $response = $this->httpClient->request('GET', config('services.exchange-rates-api'));
+            $response = $this->httpClient->request('GET', config('services.exchange_rates_api'));
 
             $ratesArray = $this->extractRatesArrayFromResponse($response);
 
