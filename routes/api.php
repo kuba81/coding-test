@@ -14,5 +14,6 @@
 use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
+$router->get('/api/cache/clear', 'CacheController@clear');
 $router->get('/api/exchange/info', 'ExchangeController@info');
 $router->get('/api/exchange/{value}/{from}/{to}', 'ExchangeController@exchange');
