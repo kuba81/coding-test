@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Domain\Exchange\Cache\EloquentCache;
+use App\Domain\Exchange\CacheInterface;
 use App\Domain\Exchange\Converter;
 use App\Domain\Exchange\RateProvider\ApiExchangeRateProvider;
+use App\Domain\Exchange\RateProvider\CachingRateProvider;
 use App\Domain\Exchange\RateProviderInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -21,10 +24,15 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(ClientInterface::class, Client::class);
 
+        $this->app->singleton(CacheInterface::class, function () {
+            return new EloquentCache;
+        });
+
         $this->app->bind(RateProviderInterface::class, function (Container $container) {
             $realProvider = new ApiExchangeRateProvider($container->make(ClientInterface::class));
+            $cache = $container->make(CacheInterface::class);
 
-            return $realProvider;
+            return new CachingRateProvider($realProvider, $cache);
         });
 
         $this->app->bind(Converter::class, function (Container $container) {

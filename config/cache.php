@@ -3,9 +3,7 @@
 use Illuminate\Support\Str;
 
 return [
-    'exchange_rates' => [
-        'ttl_seconds' => env('CACHE_TTL_SECONDS', 7200),
-    ],
+    'ttl_seconds' => env('CACHE_TTL_SECONDS', 7200),
 
     /*
     |--------------------------------------------------------------------------
