@@ -53,4 +53,9 @@ class EloquentCache implements CacheInterface
     {
         return sprintf('%s:%s', $from, $to);
     }
+
+    public function purge(): void
+    {
+        CachedConversionRate::query()->delete();
+    }
 }
