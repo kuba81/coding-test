@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Exchange\Cache;
+namespace App\Domain\Cache;
 
 use App\CachedConversionRate;
 use Carbon\Carbon;

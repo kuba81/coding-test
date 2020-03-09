@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Exchange\CacheInterface;
+use App\Domain\CacheInterface;
 
 class CacheTest extends TestCase
 {

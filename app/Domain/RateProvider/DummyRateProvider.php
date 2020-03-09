@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Exchange\RateProvider;
+namespace App\Domain\RateProvider;
 
-use App\Domain\Exchange\ConversionRate;
-use App\Domain\Exchange\RateProviderInterface;
+use App\Domain\ConversionRate;
+use App\Domain\RateProviderInterface;
 
 class DummyRateProvider implements RateProviderInterface
 {

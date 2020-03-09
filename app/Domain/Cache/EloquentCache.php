@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Exchange\Cache;
+namespace App\Domain\Cache;
 
 use App\CachedConversionRate;
-use App\Domain\Exchange\CacheInterface;
+use App\Domain\CacheInterface;
 use Illuminate\Support\Carbon;
 
 class EloquentCache implements CacheInterface

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\Exchange\CacheInterface;
+use App\Domain\CacheInterface;
 
 class CacheController extends Controller
 {

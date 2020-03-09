@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use App\Domain\Exchange\Cache\EloquentCache;
-use App\Domain\Exchange\CacheInterface;
-use App\Domain\Exchange\Converter;
-use App\Domain\Exchange\RateProvider\ApiExchangeRateProvider;
-use App\Domain\Exchange\RateProvider\CachingRateProvider;
-use App\Domain\Exchange\RateProviderInterface;
+use App\Domain\Cache\EloquentCache;
+use App\Domain\CacheInterface;
+use App\Domain\Converter;
+use App\Domain\RateProvider\ApiExchangeRateProvider;
+use App\Domain\RateProvider\CachingRateProvider;
+use App\Domain\RateProviderInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Container\Container;

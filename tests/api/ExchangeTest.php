@@ -1,8 +1,8 @@
 <?php
 
-use App\Domain\Exchange\ConversionRate;
-use App\Domain\Exchange\RateProvider\DummyRateProvider;
-use App\Domain\Exchange\RateProviderInterface;
+use App\Domain\ConversionRate;
+use App\Domain\RateProvider\DummyRateProvider;
+use App\Domain\RateProviderInterface;
 
 class ExchangeTest extends TestCase
 {

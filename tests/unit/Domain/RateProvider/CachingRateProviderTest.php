@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Exchange\RateProvider;
+namespace App\Domain\RateProvider;
 
-use App\Domain\Exchange\CacheInterface;
-use App\Domain\Exchange\ConversionRate;
-use App\Domain\Exchange\RateProviderInterface;
+use App\Domain\CacheInterface;
+use App\Domain\ConversionRate;
+use App\Domain\RateProviderInterface;
 use Mockery;
 use Mockery\MockInterface;
 use TestCase;

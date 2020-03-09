@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Exchange;
+namespace App\Domain;
 
-use App\Domain\Exchange\RateProvider\SourceException;
+use App\Domain\RateProvider\SourceException;
 
 interface RateProviderInterface
 {

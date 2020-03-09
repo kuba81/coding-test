@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Exchange;
+namespace App\Domain;
 
-use App\Domain\Exchange\RateProvider\DummyRateProvider;
+use App\Domain\RateProvider\DummyRateProvider;
 use TestCase;
 
 class ConverterTest extends TestCase
