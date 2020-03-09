@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Cache;
+use App\Domain\CacheInterface;
 
 class CacheController extends Controller
 {
-    public function clear()
+    public function clear(CacheInterface $cache)
     {
-        Cache::forget(config('cache.exchange_rates.key'));
+        $cache->purge();
 
         return response()->json([
             'error' => 0,

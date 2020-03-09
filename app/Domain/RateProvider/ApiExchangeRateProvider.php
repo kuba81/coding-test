@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Domain\Exchange\RateProvider;
+namespace App\Domain\RateProvider;
 
-use App\Domain\Exchange\ConversionRates;
-use App\Domain\Exchange\RatesProviderInterface;
+use App\Domain\ConversionRate;
+use App\Domain\RateProviderInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 
-class ApiExchangeRatesProvider implements RatesProviderInterface
+class ApiExchangeRateProvider implements RateProviderInterface
 {
     /**
      * @var ClientInterface
@@ -21,14 +21,15 @@ class ApiExchangeRatesProvider implements RatesProviderInterface
         $this->httpClient = $httpClient;
     }
 
-    public function getConversionRates(): ConversionRates
+    public function getConversionRate(string $from, string $to): ConversionRate
     {
         try {
             $response = $this->httpClient->request('GET', config('services.exchange_rates_api'));
 
             $ratesArray = $this->extractRatesArrayFromResponse($response);
+            $ratesValue = $ratesArray[$to] / $ratesArray[$from];
 
-            return new ConversionRates($ratesArray, 'api');
+            return new ConversionRate($ratesValue, 'api');
         } catch (GuzzleException $e) {
             dd($e->getMessage());
             throw new SourceException('Unable to fetch exchange rates', 0, $e);

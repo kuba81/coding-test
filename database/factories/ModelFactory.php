@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\CachedConversionRate;
 use App\User;
 use Faker\Generator as Faker;
 
@@ -20,5 +21,13 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
+    ];
+});
+
+$factory->define(CachedConversionRate::class, function (Faker $faker) {
+    return [
+        'key' => $faker->text(7),
+        'value' => $faker->randomFloat(),
+        'expiration' => $faker->unixTime,
     ];
 });

@@ -1,8 +1,8 @@
 <?php
 
-use App\Domain\Exchange\ConversionRates;
-use App\Domain\Exchange\RateProvider\DummyRatesProvider;
-use App\Domain\Exchange\RatesProviderInterface;
+use App\Domain\ConversionRate;
+use App\Domain\RateProvider\DummyRateProvider;
+use App\Domain\RateProviderInterface;
 
 class ExchangeTest extends TestCase
 {
@@ -17,8 +17,7 @@ class ExchangeTest extends TestCase
     public function testExchangeShouldReturnRoundedValuesBasedOnResponseFromThirdPartyApiResponse(): void
     {
         $this->setupRateProviderStub([
-            'GBP' => 1,
-            'USD' => 12.3456789
+            'GBP:USD' => 12.3456789
         ]);
 
         $this->json('GET', '/api/exchange/100/GBP/USD')->seeJson([
@@ -37,9 +36,7 @@ class ExchangeTest extends TestCase
      */
     public function testShouldReturnErrorIfFromCurrencyIsNotSupported(string $from, string $to, string $rejected): void
     {
-        $this->setupRateProviderStub([
-            'GBP' => 1,
-        ]);
+        $this->setupRateProviderStub([]);
 
         $url = sprintf('/api/exchange/100/%s/%s', $from, $to);
 
@@ -63,8 +60,10 @@ class ExchangeTest extends TestCase
 
     private function setupRateProviderStub(array $rates)
     {
-        $provider = new DummyRatesProvider(new ConversionRates($rates));
+        $provider = new DummyRateProvider(collect($rates)->map(function ($value) {
+            return new ConversionRate($value);
+        })->toArray());
 
-        app()->instance(RatesProviderInterface::class, $provider);
+        app()->instance(RateProviderInterface::class, $provider);
     }
 }

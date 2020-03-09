@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Exchange\RateProvider;
+namespace App\Domain\RateProvider;
 
 use RuntimeException;
 

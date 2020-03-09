@@ -1,18 +1,22 @@
 <?php
 
-use Illuminate\Support\Facades\Cache;
+use App\Domain\CacheInterface;
 
 class CacheTest extends TestCase
 {
     public function testClear()
     {
-        Cache::shouldReceive('forget')
-            ->once()
-            ->with(config('cache.exchange_rates.key'));
+        $cacheMock = Mockery::mock(CacheInterface::class);
+
+        $cacheMock->shouldReceive('purge')->once();
+
+        $this->app->instance(CacheInterface::class, $cacheMock);
 
         $this->json('GET', 'api/cache/clear')->seeJson([
             'error' => 0,
             'msg' => 'OK'
         ])->seeStatusCode(200);
+
+        Mockery::close();
     }
 }
