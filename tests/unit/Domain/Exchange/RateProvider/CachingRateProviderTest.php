@@ -37,6 +37,34 @@ class CachingRateProviderTest extends TestCase
         }
     }
 
+    public function testWillReturnCachedContentWhenInverseRateIsAvailable(): void
+    {
+        /** @var MockInterface|RateProviderInterface $nextProviderMock */
+        $nextProviderMock = Mockery::mock(RateProviderInterface::class);
+        $nextProviderMock->shouldNotReceive('getConversionRate');
+
+        /** @var MockInterface|CacheInterface $cacheMock */
+        $cacheMock = Mockery::mock(CacheInterface::class);
+        $cacheMock
+            ->shouldReceive('get')
+            ->with('USD', 'GBP')
+            ->andReturn(null);
+
+        $cacheMock
+            ->shouldReceive('get')
+            ->with('GBP', 'USD')
+            ->andReturn(1.29);
+
+        $cachingProvider = new CachingRateProvider($nextProviderMock, $cacheMock);
+
+        $rate = $cachingProvider->getConversionRate('USD', 'GBP');
+
+        $this->assertEqualsWithDelta(0.7752, $rate->getValue(), 0.0001);
+        $this->assertEquals('cache', $rate->getSource());
+
+        Mockery::close();
+    }
+
     public function testWillCacheRatesFromNextProviderWhenCachedContentNotAvailable(): void
     {
         $dummyProvider = new DummyRateProvider([
@@ -49,6 +77,12 @@ class CachingRateProviderTest extends TestCase
             ->shouldReceive('get')
             ->once()
             ->with('GBP', 'EUR')
+            ->andReturnNull();
+
+        $cacheMock
+            ->shouldReceive('get')
+            ->once()
+            ->with('EUR', 'GBP')
             ->andReturnNull();
 
         $cacheMock

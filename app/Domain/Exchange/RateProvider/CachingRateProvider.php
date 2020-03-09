@@ -28,6 +28,8 @@ class CachingRateProvider implements RateProviderInterface
     {
         if ($cachedValue = $this->conversionRateCache->get($from, $to)) {
             return new ConversionRate($cachedValue, 'cache');
+        } elseif ($inverseCachedValue = $this->conversionRateCache->get($to, $from)) {
+            return new ConversionRate(1 / $inverseCachedValue, 'cache');
         }
 
         $realConversionRate = $this->nextProvider->getConversionRate($from, $to);
