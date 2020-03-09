@@ -2,17 +2,16 @@
 
 namespace App\Domain\Exchange;
 
-use App\Domain\Exchange\RateProvider\DummyRatesProvider;
+use App\Domain\Exchange\RateProvider\DummyRateProvider;
 use TestCase;
 
 class ConverterTest extends TestCase
 {
     public function testWillCalculateValueUsingProvidedRates(): void
     {
-        $provider = new DummyRatesProvider(new ConversionRates([
-            'GBP' => 0.8667,
-            'USD' => 1.1187,
-        ]));
+        $provider = new DummyRateProvider([
+            'GBP:USD' => new ConversionRate(1.290758048)
+        ]);
 
         $converter = new Converter($provider);
 

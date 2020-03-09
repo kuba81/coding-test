@@ -10,9 +10,9 @@ use TestCase;
 
 class ApiExchangeRatesProviderTest extends TestCase
 {
-    public function testReturnValuesBasedOnResponseFromTheApi(): void
+    public function testReturnCorrectExchangeRateWhenConvertingToBaseCurrency(): void
     {
-        $body = \GuzzleHttp\json_encode([
+        $client = $this->stubClient([
             'rates' => [
                 'GBP' => 0.8667,
             ],
@@ -20,18 +20,58 @@ class ApiExchangeRatesProviderTest extends TestCase
             'date' => '2019-03-05'
         ]);
 
+        $ratesProvider = new ApiExchangeRateProvider($client);
+
+        $toBaseRate = $ratesProvider->getConversionRate('GBP', 'EUR');
+
+        $this->assertEqualsWithDelta(1.1538, $toBaseRate->getValue(), 0.0001);
+    }
+
+    public function testReturnCorrectExchangeRateWhenConvertingFromBaseCurrency(): void
+    {
+        $client = $this->stubClient([
+            'rates' => [
+                'GBP' => 0.8667,
+            ],
+            'base' => 'EUR',
+            'date' => '2019-03-05'
+        ]);
+
+        $ratesProvider = new ApiExchangeRateProvider($client);
+
+        $toBaseRate = $ratesProvider->getConversionRate('EUR', 'GBP');
+
+        $this->assertEqualsWithDelta(0.8667, $toBaseRate->getValue(), 0.0001);
+    }
+
+    public function testReturnCorrectExchangeRateWhenConvertingToAnotherCurrency(): void
+    {
+        $client = $this->stubClient([
+            'rates' => [
+                'GBP' => 0.8667,
+                'USD' => 1.1187,
+            ],
+            'base' => 'EUR',
+            'date' => '2019-03-05'
+        ]);
+
+        $ratesProvider = new ApiExchangeRateProvider($client);
+
+        $toBaseRate = $ratesProvider->getConversionRate('GBP', 'USD');
+
+        $this->assertEqualsWithDelta(1.2907, $toBaseRate->getValue(), 0.0001);
+    }
+
+    public function stubClient(array $responseArray): Client
+    {
+        $body = \GuzzleHttp\json_encode($responseArray);
+
         $remoteApiResponseStub = new MockHandler([
             new Response(200, [], $body),
         ]);
 
         $handlerStack = HandlerStack::create($remoteApiResponseStub);
-        $client = new Client(['handler' => $handlerStack]);
 
-        $ratesProvider = new ApiExchangeRatesProvider($client);
-
-        $rates = $ratesProvider->getConversionRates();
-
-        $this->assertEqualsWithDelta(0.87, $rates->getRate('GBP'), 0.01);
-        $this->assertEquals(1, $rates->getRate('EUR'));
+        return new Client(['handler' => $handlerStack]);
     }
 }

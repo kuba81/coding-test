@@ -5,22 +5,21 @@ namespace App\Domain\Exchange;
 class Converter
 {
     /**
-     * @var RatesProviderInterface
+     * @var RateProviderInterface
      */
     private $rateProvider;
 
-    public function __construct(RatesProviderInterface $rateProvider)
+    public function __construct(RateProviderInterface $rateProvider)
     {
         $this->rateProvider = $rateProvider;
     }
 
     public function convert(string $from, string $to, float $value): ConversionResult
     {
-        $conversionRates = $this->rateProvider->getConversionRates();
+        $conversionRate = $this->rateProvider->getConversionRate($from, $to);
 
-        $valueInBaseCurrency = $value / $conversionRates->getRate($from);
-        $converted = $valueInBaseCurrency * $conversionRates->getRate($to);
+        $converted = $conversionRate->getValue() * $value;
 
-        return new ConversionResult($converted, $conversionRates->getSource());
+        return new ConversionResult($converted, $conversionRate->getSource());
     }
 }
